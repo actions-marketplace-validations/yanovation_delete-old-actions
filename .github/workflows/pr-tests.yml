@@ -1,0 +1,35 @@
+name: QA on PR
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      - name: Install dependencies
+        run: pnpm install
+      - name: Is linted
+        run: pnpm lint
+      - name: Is built
+        run: |
+        # If index.ts is changed, index.js should have been updated
+          if [ -n "$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'index.ts')" ]; then
+            echo "index.ts was changed"
+            if [ -n "$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'index.js')" ]; then
+              echo "index.js was updated"
+            else
+              echo "index.js was not updated"
+              exit 1
+            fi
+          fi
+      - name: Run tests
+        run: pnpm test

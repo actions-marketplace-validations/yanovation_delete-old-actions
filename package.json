@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc && ncc build dist/index.js -o dist",
     "postbuild": "terser dist/index.js --output dist/index.js --compress --mangle",
+    "test": "echo \"TBD\" && exit 0",
     "lint": "eslint",
     "lint:fix": "eslint --fix .",
     "prepare": "husky"
