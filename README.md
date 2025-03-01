@@ -18,38 +18,39 @@ When you are ready to use this, you can schedule it to check periodically.
 ```yaml
 on:
   schedule:
-    - cron: '0 0 * * *'  # Run every day at midnight
+    - cron: '0 0 * * *'  # Specify your own schedule
+
+jobs:
+  delete-old-actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 
+      - uses: yanovation/delete-old-actions@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          days-ago: 30
+```
+
+Or you can test with dry-run option:
+```yaml
+on:
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   delete-old-actions:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: yanovation/delete-old-actions@v0.0.3-pre
+      - uses: yanovation/delete-old-actions@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           days-ago: 30
+          dry-run: true 
 ```
 
-# Release a new version
-Check the current version:
-```bash
-git tag --list --sort=-v:refname | head -n 1
-```
-
-Create a tag and push it to the release branch:
-```bash
-# Update the version before running the command
-RELEASE_VERSION="v1.0.0"
-git tag "${RELEASE_VERSION}" -m "Minor release: ${RELEASE_VERSION}"
-git push origin "${RELEASE_VERSION}"
-```
-
-Then move the major version tag (for example v1) to point to the Git ref of the current release:
-
-```bash
-git tag -fa v1 -m "Major release: v1"
-git push origin v1 --force
-```
-
-Then remember to push to Github Marketplace by releasing manually from the GUI.
+# Other docs
+- [How to release](./_docs/release.md)
+- [How to contribute](./CONTRIBUTING.md)
+- [License](./LICENSE.md)
+- [Change log](./CHANGELOG.md)
