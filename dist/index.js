@@ -31860,7 +31860,7 @@ async function run() {
         let deletions = 0;
         for (const [workflowId, runs] of Object.entries(runsByWorkflow)) {
             runs.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-            const runsToDelete = runs.slice(keepLatest).filter((run) => new Date(run.created_at) < cutoffDate);
+            const runsToDelete = runs.slice(keepLatest).filter(run => new Date(run.created_at) < cutoffDate);
             for (const run of runsToDelete) {
                 if (dryRun) {
                     core.info(`[Dry-Run] Would delete workflow run ID ${run.id} from ${run.created_at}`);
@@ -31871,7 +31871,7 @@ async function run() {
                         repo,
                         run_id: run.id,
                     });
-                    core.info(`Deleted workflow run ID ${run.id} from ${run.created_at}`);
+                    core.info(`Deleted workflow run ID ${run.id} from ${run.created_at} for the workflow ID: ${workflowId}`);
                     deletions++;
                 }
             }
@@ -31883,7 +31883,7 @@ async function run() {
     }
 }
 run()
-    .then(r => r)
+    .then(() => { })
     .catch(e => core.setFailed(e));
 
 })();

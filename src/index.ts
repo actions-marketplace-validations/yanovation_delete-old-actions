@@ -21,8 +21,15 @@ async function run() {
       per_page: 100,
     });
 
-    const runsByWorkflow: Record<string, any[]> = {};
-    for (const run of response) {
+    // Use proper TypeScript type
+    type WorkflowRun = {
+      id: number;
+      created_at: string;
+      workflow_id: number;
+    };
+
+    const runsByWorkflow: Record<string, WorkflowRun[]> = {};
+    for (const run of response as WorkflowRun[]) {
       if (!runsByWorkflow[run.workflow_id]) {
         runsByWorkflow[run.workflow_id] = [];
       }
@@ -30,9 +37,9 @@ async function run() {
     }
 
     let deletions = 0;
-    for (const [workflowId, runs] of Object.entries(runsByWorkflow) as [string, any[]][]) {
-      runs.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      const runsToDelete = runs.slice(keepLatest).filter((run: any) => new Date(run.created_at) < cutoffDate);
+    for (const [workflowId, runs] of Object.entries(runsByWorkflow)) {
+      runs.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      const runsToDelete = runs.slice(keepLatest).filter(run => new Date(run.created_at) < cutoffDate);
 
       for (const run of runsToDelete) {
         if (dryRun) {
@@ -43,7 +50,7 @@ async function run() {
             repo,
             run_id: run.id,
           });
-          core.info(`Deleted workflow run ID ${run.id} from ${run.created_at}`);
+          core.info(`Deleted workflow run ID ${run.id} from ${run.created_at} for the workflow ID: ${workflowId}`);
           deletions++;
         }
       }
@@ -56,5 +63,5 @@ async function run() {
 }
 
 run()
-  .then(r => r)
+  .then(() => {})
   .catch(e => core.setFailed(e));

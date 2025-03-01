@@ -4,6 +4,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc && ncc build dist/index.js -o dist",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix .",
     "prepare": "husky"
   },
   "dependencies": {
@@ -11,9 +13,14 @@
     "@actions/github": "^6.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.21.0",
     "@types/node": "^22.13.8",
     "@vercel/ncc": "^0.38.3",
+    "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.0.2",
+    "globals": "^16.0.0",
     "husky": "^9.1.7",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.25.0"
   }
 }
