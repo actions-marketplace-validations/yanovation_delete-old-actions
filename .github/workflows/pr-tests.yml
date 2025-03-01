@@ -21,7 +21,6 @@ jobs:
         run: pnpm lint
       - name: Is built
         run: |
-        # If index.ts is changed, index.js should have been updated
           if [ -n "$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'index.ts')" ]; then
             echo "index.ts was changed"
             if [ -n "$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'index.js')" ]; then
