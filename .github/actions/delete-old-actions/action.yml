@@ -1,0 +1,23 @@
+name: 'Delete Old GitHub Actions Runs'
+description: 'Deletes workflow runs older than a specified number of days'
+author: 'Pooyan'
+
+inputs:
+  token:
+    description: 'GitHub token'
+    required: true
+  days-ago:
+    description: 'Delete workflow runs older than this many days'
+    required: true
+  dry-run:
+    description: 'If set to true, only logs what would be deleted'
+    required: false
+    default: 'false'
+  keep-latest:
+    description: 'Number of most recent runs per workflow to retain'
+    required: false
+    default: '0'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
