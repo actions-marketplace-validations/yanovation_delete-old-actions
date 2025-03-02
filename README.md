@@ -13,7 +13,7 @@ When you are ready to use this, you can schedule it to check periodically.
 
 **WARNING: Deletion cannot be undone. Use at your own risk.**
 
-# Usage
+## Usage
 
 ```yaml
 on:
@@ -24,7 +24,7 @@ jobs:
   delete-old-actions:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 
+      - uses: actions/checkout@v4
       - uses: yanovation/delete-old-actions@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -32,6 +32,7 @@ jobs:
 ```
 
 Or you can test with dry-run option:
+
 ```yaml
 on:
   schedule:
@@ -49,8 +50,25 @@ jobs:
           dry-run: true 
 ```
 
-# Other docs
+## Options
+
+* `token`: The GitHub token to use for authentication. (**required**)
+* `days-ago`: The number of days ago to delete the runs. (**required**)
+* `dry-run`: If set to true, the Action will only list the runs to be deleted without actually deleting them. (**optional**,
+  default: false)
+* `keep-latest`: The number of latest runs to keep. (**optional**, default: 0)
+
+For the token, you can just use the `{{ secrets.GITHUB_TOKEN }}` which is a default secret that GitHub provides to each
+run. You can read more about
+it [here](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication).
+
+
+## Other docs
+
 - [How to release](./_docs/release.md)
 - [How to contribute](./CONTRIBUTING.md)
 - [License](./LICENSE.md)
 - [Change log](./CHANGELOG.md)
+
+## Articles (to learn more about it)
+- [Automatically delete old GitHub Actions runs](https://pooyan.info/articles/delete-old-github-actions-runs)
