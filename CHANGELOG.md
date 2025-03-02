@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.0.4
+- Hotfix the issue after refactor
+
 ## v1.0.3
 - Refactor the code
 - Use Jest to test the code (unit tests only)
