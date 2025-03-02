@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.3
+- Refactor the code
+- Use Jest to test the code (unit tests only)
+
 ## v1.0.2
 - Minified the final JS file
 - Added PR checks to ensure the code quality
