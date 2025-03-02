@@ -6,6 +6,7 @@
   "scripts": {
     "build": "ncc build src/index.ts -o dist",
     "postbuild": "terser dist/index.js --output dist/index.js --compress --mangle",
+    "clean": "tsc --build --clean && rm -rf dist/*",
     "test": "jest",
     "lint": "eslint",
     "lint:fix": "eslint --fix .",

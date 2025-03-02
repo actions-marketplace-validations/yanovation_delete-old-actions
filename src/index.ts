@@ -60,7 +60,7 @@ export async function run(): Promise<void> {
   try {
     const token: string = core.getInput('token', { required: true });
     const daysAgo: number = parseInt(core.getInput('days-ago', { required: true }));
-    const dryRun: boolean = core.getBooleanInput('dry-run');
+    const dryRun: boolean = core.getBooleanInput('dry-run') || false;
     const keepLatest: number = parseInt(core.getInput('keep-latest')) || 0;
 
     const cutoffDate = new Date();
@@ -68,12 +68,16 @@ export async function run(): Promise<void> {
 
     core.info(`Fetching workflow runs older than ${cutoffDate.toISOString()}...`);
     const runs = await getWorkflowRuns(token);
+    if (runs.length === 0) {
+      core.info('No workflow runs found.');
+      return;
+    }
     const runsByWorkflow = groupRunsByWorkflow(runs);
 
     let totalDeletions = 0;
     for (const [workflowId, workflowRuns] of Object.entries(runsByWorkflow)) {
       const runsToDelete = filterRuns(workflowRuns, cutoffDate, keepLatest);
-      console.debug(`Workflow ${workflowId} has ${runsToDelete.length} runs to be deleted.`);
+      console.debug(`Checking jobs for workflow: ${workflowId}.`);
       const deletedCount = await deleteWorkflowRuns(token, runsToDelete, dryRun);
       totalDeletions += deletedCount;
     }
@@ -84,6 +88,6 @@ export async function run(): Promise<void> {
   }
 }
 
-if (require.main === module) {
-  run().catch(e => core.setFailed(e));
-}
+run()
+  .then(() => {})
+  .catch(e => core.setFailed(e));
