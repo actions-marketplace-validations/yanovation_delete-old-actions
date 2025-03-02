@@ -1,5 +1,9 @@
 # Changelog
 
+## v1
+- Major version that maps to the latest V1.x.x release
+- This is the version that you should use.
+
 ## v1.0.4
 - Hotfix the issue after refactor
 
@@ -16,5 +20,8 @@
 - Use eslint with Prettier to format the code
 - Use Huskey to check code quality before commit
 
-## v1
-- Initial Release of the checkout action
+## Pre-release versions
+- `v0.0.3-pre`
+- `v0.0.2-pre`
+- `v0.0.1-pre`
+
