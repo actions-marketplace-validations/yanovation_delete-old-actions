@@ -62,6 +62,33 @@ For the token, you can just use the `{{ secrets.GITHUB_TOKEN }}` which is a defa
 run. You can read more about
 it [here](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication).
 
+## Token permissions
+If you want to use the default `${{ secrets.GITHUB_TOKEN }}`, you should give it a write permissions either on the 
+repository or organization level:  
+![How to give default write access to GITHUB_TOKEN](/_docs/img/github-token-permission.png)
+You can read more about it [here](https://docs.github.com/en/actions/security-guides/automatic-token-authentication).  
+This is the easiest way, but gives too much access to the token.
+
+Alternatively, you can authenticate with a GitHub App:
+```yaml
+...
+    steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - uses: yanovation/delete-old-actions@v1
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          days-ago: 30
+```
+You can read more about it [here](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/making-authenticated-api-requests-with-a-github-app-in-a-github-actions-workflow#authenticating-with-a-github-app).
+
+Also, another option is to [create a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
+Make sure to give the token the least needed access.
 
 ## Other docs
 
